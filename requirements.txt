@@ -1,6 +1,6 @@
-django>=1.8,<1.9
+Django==1.10.5
 django-debug-toolbar==1.5
 gunicorn==19.4.5
 whitenoise==3.0
-Pillow=4.0.0
-django-sendgrid=4.0.4
+Pillow==4.0.0
+django-sendgrid==4.0.4
