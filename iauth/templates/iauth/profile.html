@@ -1,0 +1,93 @@
+{% extends 'iauth/header.html'%}
+{% load staticfiles%}
+{%block heads%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/datepicker.css'%}">
+{%endblock%}
+{%block content%}
+<div class="container main-content">
+    <div class="row">
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissable"{% endif %}>{{ message }}
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="col-sm-3">
+            {% if user.userprofile.picture %}
+                <img class="img img-rounded" width="200px" src="/media/{{user.userprofile.picture}}" alt="Profile picture">
+            {%else %}
+                <img alt="Profile picture" class="img img-rounded" width="200px" src="/media/profile/default.jpg">
+            {%endif%}
+            <h3>{{ user.username }} <small>{{ user.email }}</small></h3>
+        </div>
+        <div class="col-sm-6">
+            <h3 class="text-primary">My Profile</h3>
+            <p class="text-info">Update fields</p>
+            <form class="form-horizontal" action='/auth/profile/' method='post'>
+                {%csrf_token%}
+                <div class="form-group">
+                    <div class="col-sm-6">
+                        <label class="control-label" for="first_name">First Name</label>
+                        <input type="text" name="first_name" id="first_name" class="form-control" value="{{ user.first_name }}">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="control-label" for="last_name">Last Name</label>
+                        <input type="text" name="last_name" id="last_name" class="form-control" value="{{ user.last_name }}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <label class="control-label" for="username">Username</label>
+                        <input type="text" name="username" id="username" class="form-control" value="{{ user.username }}" disabled/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-6">
+                        <label class="control-label" for="birthdate">Date of Birth</label>
+                        <input type="date" class="form-control" name="birthdate" id="dateofbirth" class="datepicker form-control" value="{{ user.userprofile.birthdate|date:'Y-m-d'}}" />
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="control-label" for="gender">Gender</label>
+                        <select class="form-control" name="gender" id="gender" value="{{user.userprofile.gender}}">
+                            <option value="M"> Male</option>
+                            <option value="F"> Female</option>
+                            <option value="O"> Others</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <label class="control-label" for="email">Email ID</label>
+                        <input id="email" type="email" name="email" class="form-control" value="{{user.email}}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <label class="control-label" for="phone">Phone</label>
+                        <input type="tel" name="phone" id="phone" class="form-control" value="{{user.userprofile.phone}}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-6">
+                        <button class="btn btn-success" type="submit">Update Profile</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div><!-- ./row -->
+</div><!-- ./container -->
+{%endblock%}
+{%block foots%}
+    <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/datepicker.js' %}"></script>
+    <script type="text/javascript">
+        (function($){
+            $('#dateofbirth').datetimepicker({
+                format: 'YYYY-MM-DD'
+            });
+        })(jQuery);
+    </script>
+{%endblock%}

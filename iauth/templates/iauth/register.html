@@ -1,0 +1,98 @@
+{% extends 'iauth/header.html'%}
+{% load staticfiles%}
+{%block heads%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/datepicker.css'%}">
+{%endblock%}
+{%block content%}
+<div class="container main-content">
+    <div class="row">
+        {% if registered %}
+            <div class="alert alert-success alert-dismissable">
+                Goto your email to Activate your account <a href="/auth/resend_activation_email"> Resend Email</a>
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            </div>
+        {% endif %}
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissable"{% endif %}>{{ message }}
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="col-sm-6 col-sm-offset-3">
+            <h3 class="text-primary">Sign Up Portal</h3>
+            <p class="text-info">Please enter the information required below.</p>
+            <form class="form-horizontal" action='/auth/signup/' method='post'>
+                {%csrf_token%}
+                <div class="form-group">
+                    <div class="col-sm-6">
+                        <label class="control-label" for="first_name">First Name</label>
+                        <input type="text" name="first_name" id="first_name" class="form-control" />
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="control-label" for="last_name">Last Name</label>
+                        <input type="text" name="last_name" id="last_name" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <label class="control-label" for="username">Username</label>
+                        <input type="text" name="username" id="username" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-6">
+                        <label class="control-label" for="dateofbirth">Date of Birth</label>
+                        <input type="date" name="birthdate" id="dateofbirth" class="form-control" />
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="control-label" for="gender">Gender</label>
+                        <select class="form-control" name="gender" id="gender">
+                            <option value="M"> Male</option>
+                            <option value="F"> Female</option>
+                            <option value="O"> Others</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <label class="control-label" for="email">Email ID</label>
+                        <input id="email" type="email" name="email" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <label class="control-label" for="phone">Phone</label>
+                        <input type="tel" name="phone" id="phone" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <label class="control-label" for="password">Password</label>
+                        <input type="password" name="password" id="password" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-6">
+                        <button class="btn btn-success">Sign Up</button>
+                    </div>
+                </div>
+            </form>
+            <p class="text-center">Already signed up ?<a href="/auth/login"> Sign In</a></p>
+        </div>
+    </div><!-- ./row -->
+</div><!-- ./container -->
+{%endblock%}
+{%block foots%}
+    <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/datepicker.js' %}"></script>
+    <script type="text/javascript">
+        (function($){
+            $('#dateofbirth').datetimepicker({
+                format: 'YYYY-MM-DD'
+            });
+        })(jQuery);
+    </script>
+{% endblock %}

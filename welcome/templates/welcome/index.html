@@ -1,0 +1,165 @@
+{%load staticfiles%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="author" content="Rajmani Arya">
+	<meta name="description" content="Image Filter Application">
+	<meta name="keywords" content="Image, Picture, Editing">
+	<title>Image Processing App</title>
+	<link rel="stylesheet" type="text/css" href="{%static 'css/bootstrap.min.css'%}">
+    <link rel="stylesheet" type="text/css" href="{%static 'css/bootstrap-theme.min.css'%}">
+	<link rel="stylesheet" type="text/css" href="{%static 'css/style.css'%}">
+	<script type="text/javascript" src="{%static 'js/jquery.min.js'%}"></script>
+	<script type="text/javascript" src="{%static 'js/bootstrap.min.js'%}"></script>
+	<script type="text/javascript" src="{%static 'js/jquery.smartWizard.js'%}"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('#wizard').smartWizard({
+				transitionEffect: 'fade',
+				onFinish: finished
+			});
+			function finished() {
+				$('form').submit();
+			}
+		});
+	</script>
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">PicFilter</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            {% if user.is_authenticated %}
+            <li><a href="#">Welcome {{ user.username }}</a></li>
+            {%endif%}
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="glyphicon glyphicon-user"></i> <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                {% if user.is_authenticated %}
+                  <li><a href="/auth/profile/">My Profile</a></li>
+                  <li><a href="/auth/upload">Change Avatar</a></li>
+                  <li><a href="/auth/change_password/">Change Password</a></li>
+                  <li><a href="/auth/logout/"> Logout</a></li>
+                {%else%}
+                  <li><a href="/auth/login/">Log In</a></li>
+                  <li><a href="/auth/signup/">Sign Up</a></li>
+                {%endif%}
+              </ul>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+        <h1>Image Processing Application</h1>
+        <h2 class="lead">A Cloud based app for image processing.</h2>
+        <div class="row">
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissable"{% endif %}>{{ message }}
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    	<form class="form-horizontal" action="/" method="post" enctype="multipart/form-data">
+    		{%csrf_token%}
+    		<table class="table">
+    			<tr>
+    				<td>
+    					<div id="wizard" class="swMain">
+    						<ul>
+    							<li>
+    								<a href="#step-1">
+                                       <label class="stepNumber">1</label>
+                                       <span class="stepDesc">Step 1 <br/> <small>Select Image File</small></span>
+    								</a>
+    							</li>
+    							<li>
+    								<a href="#step-2">
+                                       <label class="stepNumber">2</label>
+                                       <span class="stepDesc">Step 2 <br/> <small>Select Image Filter</small></span>                        
+                                    </a>
+    							</li>
+    							<li>
+    								<a href="#step-3">
+                                        <label class="stepNumber">3</label>
+                                       <span class="stepDesc">Step 3 <br/> <small>Apply Filter</small></span>
+    								</a>
+    							</li>
+    						</ul>
+    						<div id="step-1">
+    							<h3>Select Image File</h3>
+    							<h4 class="text-info">Choose Image file</h4>
+    							<p>{{form.non_field_errors}}</p>
+    							<div class="control-group" id="imagefield">
+                                    <label class="btn btn-success btn-file">
+                                        Choose Image <input name="filefield" type="file">
+                                    </label>                    
+                                </div>
+    						</div>
+    						<div id="step-2">
+    							<h3>Select Image Filter</h3>
+    							<h4 class="text-info">Choose Filter</h4>
+    							<table class="table">
+    								<tr>
+    									<td><input type="radio" name="preset" value="gray"> Gray</td>
+    									<td><input type="radio" name="preset" value="sepia"> Sepia</td>
+    									<td><input type="radio" name="preset" value="poster"> Poster</td>
+    								</tr>
+    								<tr>
+    									<td><img class="img img-rounded" width="120px" src="{%static 'images/gray.jpg'%}"></td>
+    									<td><img class="img img-rounded" width="120px" src="{%static 'images/sepia.jpg'%}"></td>
+    									<td><img class="img img-rounded" width="120px" src="{%static 'images/poster.jpg'%}"></td>
+    								</tr>
+    								<tr>
+    									<td><input type="radio" name="preset" value="blur"> Blur</td>
+    									<td><input type="radio" name="preset" value="edge"> Edge</td>
+    									<td><input type="radio" name="preset" value="solar"> Solar</td>
+    								</tr>
+    								<tr>
+    									<td><img class="img img-rounded" width="120px" src="{%static 'images/blur.jpg'%}"></td>
+    									<td><img class="img img-rounded" width="120px" src="{%static 'images/edge.jpg'%}"></td>
+    									<td><img class="img img-rounded" width="120px" src="{%static 'images/solar.jpg'%}"></td>
+    								</tr>
+    							</table>
+    						</div>
+    						<div id="step-3">
+    							<h3>Apply Filter</h3>
+    							<h4 class="text-info">Click Finish to apply filter to Image.</h4>
+    						</div>
+    					</div>
+    				</td>
+    			</tr>
+    		</table>
+    	</form>
+        </div>
+    </div><!-- /.container -->
+    <script type="text/javascript">
+        $(document).on('change', ':file', function() {
+            var input = $(this);
+            var label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            $('#imagefield').append("<span class='text-info'>"+ label + "</span>");
+        });
+    </script>
+</body>
+</html>

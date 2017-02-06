@@ -1,0 +1,73 @@
+{%load staticfiles%}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Rajmani Arya">
+    <meta name="description" content="Image Filter Application">
+    <meta name="keywords" content="Image, Picture, Editing">
+    <title> PicFilter | {{title}} </title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" >
+    <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}" >
+    <link rel="stylesheet" href="{% static 'css/auth.css'%}">
+    {%block heads%}{%endblock%}
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">PicFilter</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            {% if user.is_authenticated %}
+            <li><a href="#">Welcome {{ user.username }}</a></li>
+            {%endif%}
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="glyphicon glyphicon-user"></i> <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                {% if user.is_authenticated %}
+                  <li><a href="/auth/profile/">My Profile</a></li>
+                  <li><a href="/auth/upload">Change Avatar</a></li>
+                  <li><a href="/auth/change_password/">Change Password</a></li>
+                  <li><a href="/auth/logout/"> Logout</a></li>
+                {%else%}
+                  <li><a href="/auth/login/">Log In</a></li>
+                  <li><a href="/auth/signup/">Sign Up</a></li>
+                {%endif%}
+              </ul>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+</nav>
+    <!-- Main content goes here -->
+    {%block content%}{%endblock%}
+    
+    <footer>
+        <div class="container">
+            <div class="row">
+                <p class="text-center text-primary">&copy; 2016, Made By Rajmani Arya</p>
+            </div>
+        </div>
+    </footer>
+    <!-- Scripts added ended for better page loading -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    {%block foots%}
+    {%endblock%}
+</body>
+</html>

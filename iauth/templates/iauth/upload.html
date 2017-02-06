@@ -1,0 +1,40 @@
+{% extends 'iauth/header.html'%}
+{%block content%}
+<div class="container main-content">
+    <div class="row">
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissable"{% endif %}>{{ message }}
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="col-sm-6 col-sm-offset-3">
+            <h3 class="text-info text-center">Upload Avatar</h3>
+    		<form class="form-horizontal" action="/auth/upload/" enctype="multipart/form-data" method="post">
+                {%csrf_token%}
+    			<div class="form-group" id="imagefield">
+                    <label class="btn btn-primary btn-file">
+                        Choose Image <input type="file" hidden>
+                    </label>
+    			</div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Upload</button>
+                </div>
+    		</form>
+        </div>
+    </div>
+</div>
+{%endblock%}
+
+{%block foots%}
+    <script type="text/javascript">
+        $(document).on('change', ':file', function() {
+            var input = $(this);
+            var label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            $('#imagefield').append("<span>"+ label + "</span>");
+        });
+    </script>
+{%endblock%}
