@@ -14,6 +14,6 @@ urlpatterns = [
     url(r'^logout/', views._logout),
     url(r'^upload/', views._upload),
     url(r'^profile/', views._profile),
-    url(r'^activate/(?P<id>[0-9]+)/(?P<token>[-\w]+)', views._activate),
-    url(r'^resend_activation_email/(?P<id>[0-9]+)', views.resend_activation_email),
+    # url(r'^activate/(?P<id>[0-9]+)/(?P<token>[-\w]+)', views._activate),
+    # url(r'^resend_activation_email/(?P<id>[0-9]+)', views.resend_activation_email),
 ]

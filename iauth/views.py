@@ -125,14 +125,14 @@ def _register(request):
 			user = user_form.save(commit=False)
 			user.set_password(password)
 			user.date_joined = timezone.now()
-			user.is_active=False
+			user.is_active=True
 			user.save()
 			profile = profile_form.save(commit=False)
 			profile.user = user
 			profile.ipAddress=get_client_ip(request)
 			profile.save()
 			registered = True
-			send_activation_mail(user, profile)
+			# send_activation_mail(user, profile)
 			messages.success(request, "Successfully Registered !!")
 		else:
 			messages.info(request, 'Error in form !')
